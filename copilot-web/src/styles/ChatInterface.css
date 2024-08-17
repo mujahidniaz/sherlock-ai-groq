@@ -1,0 +1,326 @@
+.chat-interface {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.side-panel-container {
+  width: 350px; /* Set a fixed width */
+  min-width: 350px; /* Ensure it doesn't shrink below this width */
+  overflow-y: hidden; /* Allow scrolling if content is too long */
+  z-index: 10;
+}
+
+.side-panel {
+  height: 100%;
+  background: linear-gradient(45deg, #5e72e4 0%, #825ee4 100%);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Changed from hidden to auto */
+  color: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+.input-container label .required {
+  color: #ff4d4f;
+  margin-left: 4px;
+}
+
+.error-message {
+  color: #ff4d4f;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.main-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Changed from overflow-y: auto to overflow: hidden */
+}
+
+.chat-header {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.messages-container {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.load-data-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Toggle Button Styles */
+.toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.toggle-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.toggle-button {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background-color: #4b5563;
+  border-radius: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-button.active {
+  background-color: #10b981;
+}
+
+.toggle-switch {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.toggle-button.active .toggle-switch {
+  transform: translateX(24px);
+}
+
+/* Load Data Button Styles */
+.load-data-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.load-data-button:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.load-data-button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Notification Styles */
+.notification {
+  margin-top: 15px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.notification.success {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.notification.error {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+/* Add any additional styles from your original CSS here */
+@keyframes heartbeat {
+  0% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-5px);
+  }
+  40% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+}
+
+/* .heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+} */
+.connection-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.loading-animation {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Additional styles for SidePanel */
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+  align-content: center;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 100%;
+  height: auto;
+}
+
+.app-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-container label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.input-container input {
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.input-container input:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.input-container input::-webkit-inner-spin-button,
+.input-container input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-container input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ... (previous styles remain unchanged) */
+
+.input-container select {
+  width: 100%;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  appearance: none; /* Remove default styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px; /* Make room for custom arrow */
+}
+
+.input-container select:focus {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Style for dropdown options */
+.input-container select option {
+  background: linear-gradient(45deg, #5e72e4 0%, #825ee4 100%);
+  color: #0c0c0c;
+  padding: 10px;
+}
+
+/* For Firefox */
+.input-container select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #ffffff;
+}
+
+/* For IE and Edge */
+.input-container select::-ms-expand {
+  display: none;
+}
+
+/* ... (rest of the styles remain unchanged) */
+.load-data-button {
+  margin-bottom: 1px;
+}
+
+/* Improve scrollbar styling */
+.side-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.side-panel::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.side-panel::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.side-panel::-webkit-scrollbar-t3umb:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}

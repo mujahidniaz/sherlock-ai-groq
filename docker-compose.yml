@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  copilot_backend:
+    image: mujahid002/sherlock-ai-backend-groq
+    container_name: flask-api
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data  # Maps host directory to container directory
+    environment:
+      - FLASK_ENV=development
+      - CHUNK_SIZE=1000
+      - OLLAMA_MODEL=llama3.1
+      - LLAMA_HOST=http://ollama-api:11434  # Corrected for internal Docker network
+
+  copilot_web:
+    image: mujahid002/sherlock-ai-frontend-groq
+    container_name: react-app
+#    depends_on:
+#      - copilot_backend
+    ports:
+      - "3000:80"
+#  ollama-api:
+#    image: ollama/ollama
+#    container_name: ollama-api
+#    deploy:
+#      resources:
+#        reservations:
+#          devices:
+#            - driver: nvidia
+#              count: 1
+#              capabilities: [ gpu ]
+#    restart: always
+#    ports:
+#      - "11434:11434"
+#    volumes:
+#      - ./app_data/ollama_data:/root/.ollama  # Maps host directory to container directory
+  chromadb:
+    image: chromadb/chroma:latest
+    volumes:
+      - ./app_data/chroma_db:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma # this is the default path, change it as needed
+      - ANONYMIZED_TELEMETRY=${ANONYMIZED_TELEMETRY:-TRUE}
+    ports:
+      - "9000:8000"
+
+#volumes:
+#  ollama:
+#    driver: local
+
+networks:
+  default:
+    driver: bridge

@@ -1,0 +1,9 @@
+Flask
+Flask-SocketIO
+Flask-CORS
+groq
+llama_index
+llama-index-embeddings-huggingface
+faiss-cpu
+chromadb
+llama-index-vector-stores-chroma
