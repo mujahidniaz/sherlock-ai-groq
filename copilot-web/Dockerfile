@@ -9,13 +9,13 @@ COPY package*.json ./
 RUN rm -rf node_modules package-lock.json
 # Install dependencies
 RUN npm install
+RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
 RUN yarn install --frozen-lockfile
 # Copy the rest of the application code
 
 
 # Build the React app
-RUN npm run build
-
+RUN NODE_NO_WARNINGS=1 npm run build
 # Step 2: Serve the React app
 FROM nginx:alpine
 

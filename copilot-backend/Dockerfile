@@ -4,13 +4,13 @@ FROM python
 WORKDIR /app
 RUN mkdir /data
 # Copy the requirements file into the container
-COPY requirements.txt requirements.txt
+COPY . .
 
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code into the container
-COPY . .
+
 
 # Expose port 8000
 EXPOSE 8000
