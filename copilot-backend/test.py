@@ -1,16 +1,22 @@
-from groq import Groq
+import chromadb
+from chromadb import Settings, DEFAULT_TENANT, DEFAULT_DATABASE
+from chromadb.utils import embedding_functions
 
-client = Groq(api_key=key)
-MODEL = 'llama3-70b-8192'
-messages = [
-    {
-        "role": "user",
-        "content": "What is the sentiment of this text: 'I love this product!'"
-    }
-]
-
-response = client.chat.completions.create(
-    model=MODEL,
-    messages=messages
+chroma_client = chromadb.HttpClient(
+    host="localhost",
+    port=9000,
+    ssl=False,
+    headers=None,
+    settings=Settings(),
+    tenant=DEFAULT_TENANT,
+    database=DEFAULT_DATABASE,
 )
-print(response)
+collection = chroma_client.create_collection(
+    name="documents_collection",
+    embedding_function=embedding_functions.DefaultEmbeddingFunction(),
+    # Chroma will use this to generate embeddings
+    get_or_create=True
+)
+
+results = collection.query(query_texts=["which date zayan was born?"], n_results=15)
+print(results)
