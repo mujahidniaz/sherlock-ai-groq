@@ -49,7 +49,10 @@ const SidePanel = ({
         setSelectedModel(firstModel);
       }
     } catch (error) {
-      setNotification({ type: "error", message: "Failed to fetch models" });
+      setNotification({
+        type: "error",
+        message: "Failed to fetch models, Please refresh couple of times",
+      });
     }
   }, [setSelectedModel]);
 
