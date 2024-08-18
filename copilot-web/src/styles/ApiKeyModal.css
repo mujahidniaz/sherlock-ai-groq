@@ -14,44 +14,62 @@
 .modal-content {
   background-color: white;
   padding: 20px;
-  border-radius: 5px;
-  width: 90%;
-  max-width: 500px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+  color: #666;
+}
+
+.modal-content a {
+  color: #3b82f6;
+  text-decoration: none;
 }
 
 .api-key-input {
   width: 90%;
   padding: 10px;
-  margin: 10px 0;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 14px;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  gap: 10px;
 }
 
 .cancel-button,
 .save-button {
   padding: 10px 20px;
-  margin-left: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .cancel-button {
-  background-color: #f0f0f0;
+  background-color: #e5e7eb;
+  color: #374151;
 }
 
 .save-button {
-  background-color: #007bff;
+  background-color: #10b981;
   color: white;
 }
 
 .save-button:disabled {
-  background-color: #cccccc;
+  background-color: #9ca3af;
   cursor: not-allowed;
 }

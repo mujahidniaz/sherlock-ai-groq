@@ -21,16 +21,7 @@
   color: white;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
-.input-container label .required {
-  color: #ff4d4f;
-  margin-left: 4px;
-}
 
-.error-message {
-  color: #ff4d4f;
-  font-size: 12px;
-  margin-top: 4px;
-}
 .main-chat {
   flex: 1;
   display: flex;
@@ -53,7 +44,7 @@
 }
 
 .load-data-section {
-  margin-top: 20px;
+  margin-top: 0px;
   text-align: center;
 }
 
@@ -112,6 +103,7 @@
   border: none;
   border-radius: 8px;
   font-size: 16px;
+  margin: 1% 0% 0% 1%;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;

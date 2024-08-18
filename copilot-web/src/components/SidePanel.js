@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AnimatedHeartbeat from "./AnimatedHeartbeat";
+import ApiKeyModal from "./ApiKeyModal"; // Import the existing ApiKeyModal
 
 const SidePanel = ({
   useKnowledgeBase,
@@ -15,11 +16,21 @@ const SidePanel = ({
   const [notification, setNotification] = useState(null);
   const [models, setModels] = useState([]);
   const [currentModel, setCurrentModel] = useState("gemma2-9b-it");
-  useEffect(() => {
-    fetchModels();
-  }, []);
+  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
 
-  const fetchModels = async () => {
+  const handleOpenApiKeyModal = () => {
+    setIsApiKeyModalOpen(true);
+  };
+
+  const handleCloseApiKeyModal = () => {
+    setIsApiKeyModalOpen(false);
+  };
+  const handleSaveApiKey = (apiKey) => {
+    localStorage.setItem("groqApiKey", apiKey);
+    setIsApiKeyModalOpen(false);
+    fetchModels(); // Refetch models with the new API key
+  };
+  const fetchModels = useCallback(async () => {
     const apiKey = localStorage.getItem("groqApiKey");
     if (!apiKey) {
       setNotification({ type: "error", message: "API key not found" });
@@ -40,7 +51,7 @@ const SidePanel = ({
     } catch (error) {
       setNotification({ type: "error", message: "Failed to fetch models" });
     }
-  };
+  }, [setSelectedModel]);
 
   const handleLoadData = async (e) => {
     e.preventDefault();
@@ -59,7 +70,9 @@ const SidePanel = ({
       setIsLoading(false);
     }
   };
-
+  useEffect(() => {
+    fetchModels();
+  }, [fetchModels]);
   return (
     <div className="side-panel">
       <div className="logo-container">
@@ -83,13 +96,24 @@ const SidePanel = ({
             <div className="toggle-switch"></div>
           </div>
         </div>
-        <button
-          className={`load-data-button ${isLoading ? "disabled" : ""}`}
-          onClick={handleLoadData}
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Reload Knowledge Base"}
-        </button>
+        <div className="button-container">
+          <button
+            style={{ width: "48%" }}
+            className={`load-data-button ${isLoading ? "disabled" : ""}`}
+            onClick={handleLoadData}
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Reload Docs"}
+          </button>
+          <button
+            style={{ width: "48%" }}
+            className={`load-data-button ${isLoading ? "disabled" : ""}`}
+            onClick={handleOpenApiKeyModal}
+          >
+            Set API Key
+          </button>
+        </div>
+
         <h3>Chat Settings:</h3>
         <div className="input-container">
           <label htmlFor="modelSelect">Select Model:</label>
@@ -136,7 +160,11 @@ const SidePanel = ({
           />
         </div>
       </div>
-
+      <ApiKeyModal
+        isOpen={isApiKeyModalOpen}
+        onClose={handleCloseApiKeyModal}
+        onSave={handleSaveApiKey}
+      />
       {notification && (
         <div className={`notification ${notification.type}`}>
           <p>{notification.message}</p>

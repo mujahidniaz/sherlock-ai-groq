@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import "../styles/ChatInterface.css";
 import ApiKeyModal from "./ApiKeyModal";
@@ -20,16 +20,7 @@ const ChatInterface = () => {
   const messagesEndRef = useRef(null);
   const socketRef = useRef(null);
 
-  useEffect(() => {
-    const storedApiKey = localStorage.getItem("groqApiKey");
-    if (!storedApiKey) {
-      setIsApiKeyModalOpen(true);
-    } else {
-      initializeSocket();
-    }
-  }, []);
-
-  const initializeSocket = () => {
+  const initializeSocket = useCallback(() => {
     socketRef.current = io("http://localhost:8000");
 
     socketRef.current.on("connect", () => {
@@ -60,8 +51,7 @@ const ChatInterface = () => {
     socketRef.current.on("generation_completed", () => {
       setIsGenerating(false);
     });
-  };
-
+  }, [generationStopped]);
   const handleSaveApiKey = (apiKey) => {
     localStorage.setItem("groqApiKey", apiKey);
     setIsApiKeyModalOpen(false);
@@ -119,6 +109,14 @@ const ChatInterface = () => {
     setIsGenerating(false);
     setGenerationStopped(true);
   };
+  useEffect(() => {
+    const storedApiKey = localStorage.getItem("groqApiKey");
+    if (!storedApiKey) {
+      setIsApiKeyModalOpen(true);
+    } else {
+      initializeSocket();
+    }
+  }, [initializeSocket]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

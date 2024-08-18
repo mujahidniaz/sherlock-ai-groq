@@ -148,7 +148,7 @@ def handle_message_stream(message, chat_history, use_knowledge_base, relevant_do
 
     except Exception as e:
         print(f"Error: {e}")
-        socketio.emit('receive_message', {'content': "Error generating response"}, room=sid)
+        socketio.emit('receive_message', {'content': "Error generating response. Check your Groq API Key!!"}, room=sid)
     finally:
         # Cleanup the active stream entry after the response is completed or stopped
         active_streams.pop(sid, None)
