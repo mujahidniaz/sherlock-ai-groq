@@ -1,3 +1,4 @@
+import json
 import os
 import threading
 from flask import Flask, request, jsonify
@@ -59,8 +60,8 @@ def get_env_as_float(var_name, default=0.5):
 app = Flask(__name__)
 CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
-CHROMA_HOST = os.environ.get('CHROMA_HOST', "chromadb")
-CHROMA_PORT = os.environ.get('CHROMA_PORT', "8000")
+CHROMA_HOST = os.environ.get('CHROMA_HOST', "localhost")
+CHROMA_PORT = os.environ.get('CHROMA_PORT', "9000")
 CHROMA_COLLECTION = os.environ.get('CHROMA_COLLECTION', "documents_collection")
 CHUNK_SIZE = get_env_as_int('CHUNK_SIZE', 1000)
 TEMP_KNOWLEDGE_BASE = get_env_as_float('TEMP_KNOWLEDGE_BASE', 0.4)
@@ -76,11 +77,11 @@ chroma_client = chromadb.HttpClient(
     database=DEFAULT_DATABASE,
 )
 collection = chroma_client.create_collection(
-            name=CHROMA_COLLECTION,
-            embedding_function=embedding_functions.DefaultEmbeddingFunction(),
-            # Chroma will use this to generate embeddings
-            get_or_create=True
-        )
+    name=CHROMA_COLLECTION,
+    embedding_function=embedding_functions.DefaultEmbeddingFunction(),
+    # Chroma will use this to generate embeddings
+    get_or_create=True
+)
 
 results = collection.query(query_texts=["begin"], n_results=1)
 # Create or get ChromaDB collection
@@ -104,7 +105,7 @@ Your name is Sherlock, an AI assistant that answers queries based on local docum
 Your goal is to assist users with accurate, helpful information from documents or general knowledge."""
 
 
-def handle_message_stream(message, chat_history, use_knowledge_base, relevant_documents, api_key,model, sid):
+def handle_message_stream(message, chat_history, use_knowledge_base, relevant_documents, api_key, model, sid):
     try:
 
         print(model)
@@ -116,7 +117,6 @@ def handle_message_stream(message, chat_history, use_knowledge_base, relevant_do
             get_or_create=True
         )
         if use_knowledge_base:
-
             results = collection.query(
                 query_texts=[message], n_results=relevant_documents
             )
@@ -166,7 +166,7 @@ def handle_message(data):
     print(relevant_documents)
     active_streams[sid] = 'active'  # Mark this stream as active
     thread = threading.Thread(target=handle_message_stream,
-                              args=(message, chat_history, use_knowledge_base, relevant_documents, api_key,model, sid))
+                              args=(message, chat_history, use_knowledge_base, relevant_documents, api_key, model, sid))
     thread.start()
 
 
@@ -234,12 +234,14 @@ def get_models():
 
     try:
         client = Groq(api_key=api_key)
-        models = client.models.list()
-        text_models = [model for model in models if "whisper" not in model["id"]]
-        return text_models.json(), 200
+        models = json.loads(client.models.list().model_dump_json())
+        text_models = [model for model in models['data'] if "whisper" not in model['id']]
+
+        # Convert the list of models to a JSON serializable format if needed
+        return text_models, 200
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=8000, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=8000, debug=True, allow_unsafe_werkzeug=True, use_reloader=False)

@@ -41,7 +41,7 @@ const SidePanel = ({
       const response = await axios.get(
         `http://localhost:8000/list_models?api_key=${apiKey}`
       );
-      const fetchedModels = response.data.data;
+      const fetchedModels = response.data;
       setModels(fetchedModels);
       if (fetchedModels.length > 0) {
         const firstModel = fetchedModels[0].id;
