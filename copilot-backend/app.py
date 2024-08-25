@@ -235,7 +235,8 @@ def get_models():
     try:
         client = Groq(api_key=api_key)
         models = client.models.list()
-        return models.json(), 200
+        text_models = [model for model in models if "whisper" not in model["id"]]
+        return text_models.json(), 200
     except Exception as e:
         return jsonify({"Error": str(e)}), 500
 
