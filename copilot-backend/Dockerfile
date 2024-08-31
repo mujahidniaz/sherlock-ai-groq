@@ -1,5 +1,5 @@
 # Use the official Python image from the Docker Hub
-FROM python
+FROM python:3.11-slim
 # Set the working directory
 WORKDIR /app
 RUN mkdir /data
